@@ -1,0 +1,15 @@
+﻿<Properties StartupConfiguration="{EA995D94-10CF-AD8B-CD44-9744F8CD94E8}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Graph.cs">
+    <Files>
+      <File FileName="Assets/Graph.cs" Line="52" Column="18" />
+      <File FileName="Assets/ColoredPoint.shader" Line="15" Column="24" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.Func PreferredExecutionTarget="Unity.Editor" />
+</Properties>

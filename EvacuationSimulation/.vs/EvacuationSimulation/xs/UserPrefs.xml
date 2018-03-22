@@ -1,11 +1,11 @@
 ﻿<Properties StartupConfiguration="{6971E19C-A5FA-4B73-4509-DE6323E723FA}|">
   <MonoDevelop.Ide.ItemProperties.EvacuationSimulation PreferredExecutionTarget="Unity.Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/WanderAction.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/HazardManager.cs">
     <Files>
-      <File FileName="Assets/MinionStats.cs" Line="10" Column="1" />
-      <File FileName="Assets/Scripts/State.cs" Line="12" Column="31" />
-      <File FileName="Assets/Scripts/StateController.cs" Line="13" Column="40" />
-      <File FileName="Assets/Scripts/WanderAction.cs" Line="7" Column="12" />
+      <File FileName="Assets/Scripts/WanderAction.cs" Line="15" Column="34" />
+      <File FileName="Assets/Scripts/_Grid/PhysicalNode.cs" Line="8" Column="29" />
+      <File FileName="Assets/Scripts/_Grid/CustomGrid.cs" Line="11" Column="35" />
+      <File FileName="Assets/Scripts/HazardManager.cs" Line="7" Column="12" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />

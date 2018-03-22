@@ -8,6 +8,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2c1b36f0095c44dd8930dc801ed88af, type: 3}
-  m_Name: Wander
+  m_Script: {fileID: 11500000, guid: eb0a8db7107194fcc9443329290fbf35, type: 3}
+  m_Name: Wander Routine
   m_EditorClassIdentifier: 
+  actions:
+  - {fileID: 11400000, guid: ff73eb0d2a53d4ef4b111384f067c6a7, type: 2}

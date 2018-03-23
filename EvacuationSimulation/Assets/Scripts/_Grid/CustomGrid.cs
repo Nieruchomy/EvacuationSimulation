@@ -9,6 +9,7 @@ public class CustomGrid : MonoBehaviour
     public LayerMask unwalkableMask;
     public IntVector2 size;//number of nodes
     public float nodeRadius = 0.5f;
+    public bool displayGrid = false;
 
     PhysicalNode[,] grid;
     Vector2 worldSize;
@@ -16,7 +17,7 @@ public class CustomGrid : MonoBehaviour
     Vector3 InitCornerPos;
 
 
-    void Start()
+    void Awake()
     {
         nodeDiameter = nodeRadius * 2;
 
@@ -53,6 +54,12 @@ public class CustomGrid : MonoBehaviour
 
     }
 
+    public PhysicalNode[,] GetGrid()
+    {
+        return grid; 
+    }
+
+
 
     void OnDrawGizmos()
     {
@@ -62,19 +69,21 @@ public class CustomGrid : MonoBehaviour
 
         //InitCorner
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(InitCornerPos, 0.5f);
+        Gizmos.DrawWireSphere(InitCornerPos, 0.2f);
 
         //Nodes
-        if (grid != null)
+        if(displayGrid == true)
         {
-            foreach (PhysicalNode n in grid)
+            if (grid != null)
             {
-                Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                Gizmos.DrawCube(n.worldPos, Vector3.one * (nodeRadius * 2 - 0.2f));
+                foreach (PhysicalNode n in grid)
+                {
+                    Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                    Gizmos.DrawCube(n.worldPos, Vector3.one * (nodeRadius * 2 - 0.2f));
+                }
             }
+   
         }
-
-
     }
 
 }

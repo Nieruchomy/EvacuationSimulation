@@ -5,12 +5,12 @@ using UnityEngine;
 public class PhysicalNode
 {
 
-    public Vector3 worldPos;
+    public Vector3 onGridPos;
     public  bool walkable;
 
-    public PhysicalNode( Vector3 worldPos, bool walkable)
+    public PhysicalNode( Vector3 onGridPos, bool walkable)
     {
-        this.worldPos = worldPos;
+        this.onGridPos = onGridPos;
         this.walkable = walkable;
 
     }

@@ -9,8 +9,8 @@ public class LevelManager : MonoBehaviour
 
 	void Start()
     {
-        hazardManager.SetGrid(customGrid.GetGrid());
-        hazardManager.SetSize(customGrid.size);
+       // hazardManager.SetGrid(customGrid.GetGrid());
+      //  hazardManager.SetSize(customGrid.size);
 	}
 
 }

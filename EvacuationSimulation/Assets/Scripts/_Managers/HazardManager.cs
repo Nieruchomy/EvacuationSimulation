@@ -8,15 +8,15 @@ public class HazardManager : MonoBehaviour
 
     List<Transform> flames; 
     PhysicalNode[,] grid;
-    IntVector2 size;
+   Vector2Int size;
     Vector3 initPos;
 
 
 	void Start()
 	{
         flames = new List<Transform>();
-        initPos = GetRandomNode(grid).worldPos;
-        CreateFlame(initPos);
+//        initPos = GetRandomNode(grid).worldPos;
+    //    CreateFlame(initPos);
 	}
 
 	void Update()
@@ -29,7 +29,7 @@ public class HazardManager : MonoBehaviour
         this.grid = grid;
     }
 
-    public void SetSize(IntVector2 size)
+    public void SetSize(Vector2Int size)
     {
         this.size = size;
     }
@@ -50,9 +50,9 @@ public class HazardManager : MonoBehaviour
     PhysicalNode GetRandomNode(PhysicalNode[,] grid)
     {
         int randomX = Random.Range(0, size.x - 1);
-        int randomZ = Random.Range(0, size.z - 1);
+        int randomZ = Random.Range(0, size.y - 1);
         PhysicalNode node = null;
-        for (int z = 0; z < size.z; z++)
+        for (int z = 0; z < size.y; z++)
         {
             for (int x = 0; x < size.x; x++)
             {

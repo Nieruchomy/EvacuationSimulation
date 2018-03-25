@@ -1,65 +1,75 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Renderer))]
 public class CustomGrid : MonoBehaviour
 {
 
-    public LayerMask unwalkableMask;
-    public IntVector2 size;//number of nodes
+
+    [Header("Parameters")]
+    public Transform player;
+    public Vector3 worldPos;
+    public Vector2 worldSize;
     public float nodeRadius = 0.5f;
+    public LayerMask unwalkableMask;
+
+    [Header("Gizmos Settings")]
     public bool displayGrid = false;
 
+    //Private fields
     PhysicalNode[,] grid;
-    Vector2 worldSize;
-    float nodeDiameter;
-    Vector3 InitCornerPos;
+    Vector3 pivot;
+    Vector2Int localSize; // number of nodes
+    Vector3 initPointPos; // -x-y corner
+    float nodeDiameter; // 
+
 
 
     void Awake()
     {
-        nodeDiameter = nodeRadius * 2;
+        worldPos = transform.localPosition; // set up world position
+        nodeDiameter = nodeRadius * 2; // sey up diameter
 
-        Renderer ren = GetComponent<Renderer>();
+        float worldSizeX = worldSize.x;
+        float worldSizeZ = worldSize.y;
 
-        worldSize = new Vector2(ren.bounds.size.x, ren.bounds.size.z);
+        initPointPos = worldPos + (Vector3.back * (worldSizeZ / 2)) + (Vector3.left * (worldSizeX / 2));
 
-        InitCornerPos = transform.position + (Vector3.back * (worldSize.y / 2)) +
-                                 transform.position + (Vector3.left * (worldSize.x / 2));
-
-        size.x = Mathf.RoundToInt(worldSize.x / nodeDiameter);
-        size.z = Mathf.RoundToInt(worldSize.y / nodeDiameter);
+        localSize.x =  Mathf.RoundToInt(worldSizeX / nodeDiameter);
+        localSize.y = Mathf.RoundToInt(worldSizeZ / nodeDiameter);
 
         GenerateGrid();
     }
 
-
-    void GenerateGrid()
+	void GenerateGrid()
     {
-        grid = new PhysicalNode[size.x, size.z];
+        grid = new PhysicalNode[localSize.x, localSize.y];
 
-        for (int z = 0; z < size.z; z++)
+        for (int z = 0; z < localSize.y; z++)
         {
-            for (int x = 0; x < size.x; x++)
+            for (int x = 0; x < localSize.x; x++)
             {
-                Vector3 worldPos = InitCornerPos + (Vector3.right * (x * nodeDiameter + nodeRadius)) +
-                    (Vector3.forward * (z * nodeDiameter + nodeRadius));
+                Vector3 onGridPos = initPointPos + (Vector3.right * (x * nodeDiameter + nodeRadius)) +
+                (Vector3.forward * (z * nodeDiameter + nodeRadius));
 
-                bool walkable = !(Physics.CheckSphere(worldPos, nodeRadius, unwalkableMask));
+                bool walkable = !(Physics.CheckSphere(onGridPos, nodeRadius, unwalkableMask));
 
-                grid[x, z] = new PhysicalNode(worldPos, walkable);
+                grid[x, z] = new PhysicalNode(onGridPos, walkable);
             }
         }
-
     }
 
-    public PhysicalNode[,] GetGrid()
+    public PhysicalNode GetNode(Vector3 point)
     {
-        return grid; 
+        float percentX = (point.x + worldSize.x / 2) / worldSize.x;
+        float percentY = (point.z + worldSize.y / 2) / worldSize.y;
+
+        percentX = Mathf.Clamp01(percentX);
+        percentY = Mathf.Clamp01(percentY);
+
+        int x = Mathf.RoundToInt((worldSize.x - 1) * percentX);
+        int y = Mathf.RoundToInt((worldSize.y - 1) * percentY);
+        return grid[x,y];
     }
-
-
 
     void OnDrawGizmos()
     {
@@ -69,34 +79,30 @@ public class CustomGrid : MonoBehaviour
 
         //InitCorner
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(InitCornerPos, 0.2f);
+            Gizmos.DrawWireSphere(initPointPos, 0.2f);
 
         //Nodes
         if(displayGrid == true)
         {
             if (grid != null)
             {
+                PhysicalNode playerNode = GetNode(player.position);
                 foreach (PhysicalNode n in grid)
                 {
-                    Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                    Gizmos.DrawCube(n.worldPos, Vector3.one * (nodeRadius * 2 - 0.2f));
+                    if(playerNode == n) {
+                        Gizmos.color = Color.cyan;
+                        Gizmos.DrawCube(n.onGridPos, new Vector3(nodeDiameter - 0.1f, 0.1f, nodeDiameter - 0.1f));
+                    }else {
+                        Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                        Gizmos.DrawCube(n.onGridPos, new Vector3(nodeDiameter - 0.1f, 0.1f, nodeDiameter - 0.1f));   
+                    }
+
                 }
             }
    
         }
+
+
     }
 
-}
-
-[System.Serializable]
-public struct IntVector2
-{
-    public int x;
-    public int z;
-
-    public IntVector2(int x, int z)
-    {
-        this.x = x;
-        this.z = z;
-    }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
-[RequireComponent(typeof(Renderer))]
 public class CustomGrid : MonoBehaviour
 {
 
@@ -44,16 +44,16 @@ public class CustomGrid : MonoBehaviour
     {
         grid = new PhysicalNode[localSize.x, localSize.y];
 
-        for (int z = 0; z < localSize.y; z++)
+        for (int y = 0; y < localSize.y; y++)
         {
             for (int x = 0; x < localSize.x; x++)
             {
                 Vector3 onGridPos = initPointPos + (Vector3.right * (x * nodeDiameter + nodeRadius)) +
-                (Vector3.forward * (z * nodeDiameter + nodeRadius));
+                (Vector3.forward * (y * nodeDiameter + nodeRadius));
 
                 bool walkable = !(Physics.CheckSphere(onGridPos, nodeRadius, unwalkableMask));
 
-                grid[x, z] = new PhysicalNode(onGridPos, walkable);
+                grid[x, y] = new PhysicalNode(onGridPos, walkable, x, y);
             }
         }
     }
@@ -71,6 +71,31 @@ public class CustomGrid : MonoBehaviour
         return grid[x,y];
     }
 
+    public List<PhysicalNode> GetNodeNeighbours(PhysicalNode node)
+    {
+        List<PhysicalNode> neighbours = new List<PhysicalNode>();
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if(x == 0 && y == 0)
+                {
+                    continue;
+                }
+
+                int auxX = node.onGridX + x;
+                int auxY = node.onGridY + y;
+
+                if(auxX >= 0 && auxX < localSize.x && auxY >= 0 && auxY < localSize.y)
+                {
+                    neighbours.Add(grid[auxX, auxY]);
+                }
+            }
+        }
+        return neighbours;
+    }
+
+    public List<PhysicalNode> path;
     void OnDrawGizmos()
     {
         //Grid
@@ -80,6 +105,7 @@ public class CustomGrid : MonoBehaviour
         //InitCorner
         Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(initPointPos, 0.2f);
+
 
         //Nodes
         if(displayGrid == true)
@@ -91,10 +117,13 @@ public class CustomGrid : MonoBehaviour
                 {
                     if(playerNode == n) {
                         Gizmos.color = Color.cyan;
-                        Gizmos.DrawCube(n.onGridPos, new Vector3(nodeDiameter - 0.1f, 0.1f, nodeDiameter - 0.1f));
+                        Gizmos.DrawCube(n.worldPos, new Vector3(nodeDiameter - 0.1f, 0.1f, nodeDiameter - 0.1f));
                     }else {
                         Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                        Gizmos.DrawCube(n.onGridPos, new Vector3(nodeDiameter - 0.1f, 0.1f, nodeDiameter - 0.1f));   
+                        if (path != null)
+                            if (path.Contains(n))
+                                Gizmos.color = Color.black;
+                        Gizmos.DrawCube(n.worldPos, new Vector3(nodeDiameter - 0.1f, 0.1f, nodeDiameter - 0.1f));   
                     }
 
                 }

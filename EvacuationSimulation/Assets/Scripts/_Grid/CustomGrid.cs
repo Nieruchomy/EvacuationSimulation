@@ -130,8 +130,19 @@ public class CustomGrid : MonoBehaviour
             }
    
         }
+    }
 
+    //AUX methods
 
+    public PhysicalNode RandomNode
+    {
+        get
+        {
+            int randX = Random.Range(0, localSize.x);
+            int randY = Random.Range(0, localSize.y);
+            PhysicalNode randomNode = grid[randX, randY];
+            return randomNode;
+        }
     }
 
 }
